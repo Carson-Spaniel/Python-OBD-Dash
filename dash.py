@@ -135,6 +135,10 @@ def main():
     with open("Data/speed_limit.txt", "w") as file:
         file.write(str(0))
 
+    # Clear compass
+    with open("Data/compass.txt", "w") as file:
+        file.write(str(0))
+
     # Load the last visited page
     try:
         with open("Data/info.txt", "r") as file:
@@ -478,8 +482,18 @@ def main():
             #     draw_text(screen, f"{int(round(speed,0))}", font_medlar, FONT_COLOR, SCREEN_WIDTH *.87, SCREEN_HEIGHT // 2)
             #     draw_text(screen, "MPH", font_small_clean, FONT_COLOR, SCREEN_WIDTH *.87, SCREEN_HEIGHT // 2+50)
 
-            draw_text(screen, f"{round((air_temp*(9/5))+32,1)}F", font_medium, FONT_COLOR, SCREEN_WIDTH*.7, SCREEN_HEIGHT - SCREEN_HEIGHT*.15)
-            draw_text(screen, f"{round(voltage,1)} v", font_medium, FONT_COLOR, SCREEN_WIDTH*.3, SCREEN_HEIGHT - SCREEN_HEIGHT*.15)
+            compass = '0'
+            try:
+                with open("Data/compass.txt", "r") as file:
+                    compass = file.readline()
+            except Exception:
+                pass
+            
+            if compass != '0':
+                draw_text(screen, f"{compass}", font_medium_clean, FONT_COLOR, SCREEN_WIDTH//2, SCREEN_HEIGHT - SCREEN_HEIGHT*.15)
+            else:
+                draw_text(screen, f"{round((air_temp*(9/5))+32,1)}F", font_medium, FONT_COLOR, SCREEN_WIDTH*.7, SCREEN_HEIGHT - SCREEN_HEIGHT*.15)
+                draw_text(screen, f"{round(voltage,1)} v", font_medium, FONT_COLOR, SCREEN_WIDTH*.3, SCREEN_HEIGHT - SCREEN_HEIGHT*.15)
 
             # Draw page buttons
             draw_text(screen, "<", font_medium, FONT_COLOR, SCREEN_WIDTH*.02, SCREEN_HEIGHT * .05)
